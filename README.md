@@ -1,6 +1,6 @@
 # AWS in Action: Lambda
 
-This repository demonstrates how you can create a bunch of resized images right after uploading an image to S3. The solution requires no servers, is scalable and can be automatically deployed within minutes. The following figure demonstrate the image resizing process.
+Lambda functions to perform image resiving right after uploading the file to S3. With the serverless approach no server setup required. This is autoscaling and can be automatically deployed within minutes. The following figure demonstrate the image resizing process.
 
 ![Image resizing process](./lambda_resize.png?raw=true "Image resizing process")
 
@@ -24,19 +24,19 @@ You can find out how [ImageMagick resize](http://www.imagemagick.org/Usage/resiz
 Clone this repository ...
 
 ```
-$ git clone git@github.com:AWSinAction/lambda.git
+$ git clone repo
 $ cd lambda/
 ```
 
 or download and extract the zipped repository.
 
 ```
-$ wget https://github.com/AWSinAction/lambda/archive/master.zip
+$ wget https://github.com/winnk/lambda/archive/master.zip
 $ unzip master.zip
 $ cd lambda-master/
 ```
 
-Create an S3 bucket for your Lambda code in the US East (N. Virginia, `us-east-1`) region and upload the `lambda.zip` file (replace `$LambdaS3Bucket` with a S3 bucket name e.g. `lambda-michael`).
+Create an S3 bucket for your Lambda code in the US East (N. Virginia, `us-east-1`) region and upload the `lambda.zip` file (replace `$LambdaS3Bucket` with a S3 bucket name e.g. `lambda-demo`).
 
 ==WARNING: This bucket has nothing to do with the resizing of images. It contains the zipped source code of the Lambda function.==
 
@@ -46,7 +46,7 @@ $ aws s3 mb s3://$LambdaS3Bucket
 $ aws s3 cp lambda.zip s3://$LambdaS3Bucket/lambda.zip
 ```
 
-Create a CloudFormation stack (replace `$ImageS3Bucket` with a name for your image bucket e. g. `image-michael`, replace `$LambdaS3Bucket` with your Lambda code S3 bucket name).
+Create a CloudFormation stack (replace `$ImageS3Bucket` with a name for your image bucket e. g. `image-demo`, replace `$LambdaS3Bucket` with your Lambda code S3 bucket name).
 
 ```
 $ aws cloudformation create-stack --stack-name lambda-resize --template-body file://template.json --capabilities CAPABILITY_IAM --parameters ParameterKey=ImageS3Bucket,ParameterValue=$ImageS3Bucket ParameterKey=LambdaS3Bucket,ParameterValue=$LambdaS3Bucket
@@ -74,8 +74,8 @@ $ aws s3 ls s3://$ImageS3Bucket-resized
   PRE 150x/
   PRE 50x50/
   PRE x150/
-                           
-$ aws s3 ls s3://$ImageS3Bucket-resized/150x/                           
+
+$ aws s3 ls s3://$ImageS3Bucket-resized/150x/
 ```
 
 As you can see, for every size configuration a new "directory" was created.
